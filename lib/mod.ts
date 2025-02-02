@@ -130,12 +130,12 @@ export const difference = <T>(a: T[], b: T[]): T[] => {
  * @returns an array of elements in a not present in b based on the selector
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const differenceBy = <T, K>(a: T[], b: T[], selector: (value: T) => K): T[] => {
+export const differenceBy = <T, K>(a: T[], b: T[], selector: (value: T, index: number) => K): T[] => {
 	const bSet = new Set(b.map(selector));
 	const aSet = new Set<K>();
 
-	return a.filter((value) => {
-		const key = selector(value);
+	return a.filter((value, idx) => {
+		const key = selector(value, idx);
 
 		if (!bSet.has(key) && !aSet.has(key)) {
 			aSet.add(key);
