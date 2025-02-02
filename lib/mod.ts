@@ -178,9 +178,9 @@ export const uniqueBy = <T, K>(array: T[], selector: (value: T, index: number) =
 	const keys = new Set<K>();
 	const values: T[] = [];
 
-	for (let i = 0, il = array.length; i < il; i++) {
-		const value = array[i];
-		const key = selector(value, i);
+	for (let idx = 0, len = array.length; idx < len; idx++) {
+		const value = array[idx];
+		const key = selector(value, idx);
 
 		if (keys.has(key)) {
 			continue;
