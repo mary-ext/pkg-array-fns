@@ -69,7 +69,8 @@ export const partition = <T>(array: T[], predicate: (item: T) => unknown): [T[],
 	const a: T[] = [];
 	const b: T[] = [];
 
-	for (const item of array) {
+	for (let idx = 0, len = array.length; idx < len; idx++) {
+		const item = array[idx];
 		(predicate(item) ? a : b).push(item);
 	}
 
