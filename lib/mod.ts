@@ -78,6 +78,40 @@ export const partition = <T>(array: T[], predicate: (item: T) => unknown): [T[],
 };
 
 /**
+ * groups subsequent elements from an array based on a predicate
+ * @param array array to cluster
+ * @param predicate function to test consecutive elements with
+ * @returns an array of clusters, where each cluster is an array of consecutive elements that satisfy the predicate
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export const cluster = <T>(array: T[], predicate: (a: T, b: T) => unknown): T[][] => {
+	const len = array.length;
+
+	if (len === 0) {
+		return [];
+	}
+
+	let prev = array[0];
+	let current = [prev];
+
+	const clusters: T[][] = [current];
+
+	for (let idx = 1; idx < len; idx++) {
+		const item = array[idx];
+
+		if (predicate(prev, item)) {
+			current.push(item);
+		} else {
+			clusters.push(current = [item]);
+		}
+
+		prev = item;
+	}
+
+	return clusters;
+};
+
+/**
  * returns elements present in the first array but not in the second
  * @param a the source array
  * @param b the array to compare against
