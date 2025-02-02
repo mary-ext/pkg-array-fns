@@ -65,13 +65,13 @@ export const mapDefined = <T, R>(array: T[], mapper: (value: T, index: number) =
  * and the second array containing elements that doesn't satisfy the test.
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const partition = <T>(array: T[], predicate: (item: T) => unknown): [T[], T[]] => {
+export const partition = <T>(array: T[], predicate: (item: T, index: number) => unknown): [T[], T[]] => {
 	const a: T[] = [];
 	const b: T[] = [];
 
 	for (let idx = 0, len = array.length; idx < len; idx++) {
 		const item = array[idx];
-		(predicate(item) ? a : b).push(item);
+		(predicate(item, idx) ? a : b).push(item);
 	}
 
 	return [a, b];
