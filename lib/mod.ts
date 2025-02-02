@@ -41,7 +41,7 @@ export const chunked = <T>(array: T[], size: number): T[][] => {
  * @returns an array of transformed elements
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const mapDefined = <T, R>(array: T[], mapper: (value: T) => R | undefined): R[] => {
+export const mapDefined = <T, R>(array: T[], mapper: (value: T, index: number) => R | undefined): R[] => {
 	const len = array.length;
 	const mapped: R[] = [];
 
@@ -49,7 +49,7 @@ export const mapDefined = <T, R>(array: T[], mapper: (value: T) => R | undefined
 	let temp: R | undefined;
 
 	for (; idx < len; idx++) {
-		if ((temp = mapper(array[idx])) !== undefined) {
+		if ((temp = mapper(array[idx], idx)) !== undefined) {
 			mapped.push(temp);
 		}
 	}
