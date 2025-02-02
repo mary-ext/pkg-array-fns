@@ -88,6 +88,30 @@ export const difference = <T>(a: T[], b: T[]): T[] => {
 };
 
 /**
+ * returns elements present in the first array but not in the second, based on a selector
+ * @param a the source array
+ * @param b the array to compare against
+ * @param selector function to derive comparison keys
+ * @returns an array of elements in a not present in b based on the selector
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export const differenceBy = <T, K>(a: T[], b: T[], selector: (value: T) => K): T[] => {
+	const bSet = new Set(b.map(selector));
+	const aSet = new Set<K>();
+
+	return a.filter((value) => {
+		const key = selector(value);
+
+		if (!bSet.has(key) && !aSet.has(key)) {
+			aSet.add(key);
+			return true;
+		}
+
+		return false;
+	});
+};
+
+/**
  * returns elements common to both arrays
  * @param a the first array
  * @param b the second array
