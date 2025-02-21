@@ -84,7 +84,7 @@ export const partition = <T>(array: T[], predicate: (item: T, index: number) => 
  * @returns an array of clusters, where each cluster is an array of consecutive elements that satisfy the predicate
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const cluster = <T>(array: T[], predicate: (a: T, b: T) => unknown): T[][] => {
+export const cluster = <T>(array: T[], predicate: (a: T, b: T, array: [T, ...T[]]) => unknown): T[][] => {
 	const len = array.length;
 
 	if (len === 0) {
@@ -99,7 +99,7 @@ export const cluster = <T>(array: T[], predicate: (a: T, b: T) => unknown): T[][
 	for (let idx = 1; idx < len; idx++) {
 		const item = array[idx];
 
-		if (predicate(prev, item)) {
+		if (predicate(prev, item, current as [T, ...T[]])) {
 			current.push(item);
 		} else {
 			clusters.push(current = [item]);
