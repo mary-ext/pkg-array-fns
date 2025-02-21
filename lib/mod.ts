@@ -248,3 +248,21 @@ export const definite = <T>(arr: (T | FalsyValue)[]): T extends FalsyValue ? nev
 	// deno-lint-ignore no-explicit-any
 	return arr.filter(Boolean) as any;
 };
+
+/**
+ * filters an array using a predicate function, iterating from the end of the array
+ * @param array the array to filter
+ * @param predicate function to test each element with
+ * @returns a new array containing elements that satisfy the predicate, in the original order
+ */
+export const filterRight = <T>(array: T[], predicate: (value: T, index: number) => boolean): T[] => {
+	const result: T[] = [];
+
+	for (let i = array.length - 1; i >= 0; i--) {
+		if (predicate(array[i], i)) {
+			result.push(array[i]);
+		}
+	}
+
+	return result.reverse();
+};
