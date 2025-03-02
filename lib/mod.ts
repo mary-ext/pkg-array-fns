@@ -269,3 +269,37 @@ export const filterRight = <T>(array: T[], predicate: (value: T, index: number) 
 
 	return result.reverse();
 };
+
+/**
+ * randomly selects an index based on weights
+ * @param weights array of weights (numbers)
+ * @returns random index selected based on weight distribution or -1 if array is empty
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export const weightedIndex = (weights: number[]): number => {
+	const len = weights.length;
+
+	const arr = new Array(len);
+	let total = 0;
+
+	for (let i = 0; i < len; i++) {
+		const weight = Math.max(0, weights[i]);
+		arr[i] = weight;
+		total += weight;
+	}
+
+	if (total <= 0) {
+		return -1;
+	}
+
+	let rand = Math.random() * total;
+	for (let i = 0; i < len; i++) {
+		rand -= arr[i];
+
+		if (rand < 0) {
+			return i;
+		}
+	}
+
+	return len - 1;
+};
