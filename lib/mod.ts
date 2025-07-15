@@ -303,3 +303,24 @@ export const weightedIndex = (weights: number[]): number => {
 
 	return len - 1;
 };
+
+/**
+ * returns the cartesian product of two arrays
+ * @template A type of elements in the first array
+ * @template B type of elements in the second array
+ * @param a the first array
+ * @param b the second array
+ * @returns an array of tuples, where each tuple contains one element from `a` and one from `b`
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export const product = <A, B>(a: A[], b: B[]): [A, B][] => {
+	const result: [A, B][] = [];
+
+	for (let i = 0, lenA = a.length; i < lenA; i++) {
+		for (let j = 0, lenB = b.length; j < lenB; j++) {
+			result.push([a[i], b[j]]);
+		}
+	}
+
+	return result;
+};
