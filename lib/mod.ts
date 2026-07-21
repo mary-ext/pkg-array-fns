@@ -315,6 +315,38 @@ export const weightedIndex = (weights: readonly number[]): number => {
 };
 
 /**
+ * groups elements by the result of a function, excluding undefined values
+ * @param array array to group
+ * @param selector function that returns the grouping key or undefined
+ * @returns a Map with keys as group identifiers and values as arrays of grouped elements
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export const groupByDefined = <T, K>(
+	array: readonly T[],
+	selector: (value: T, index: number) => K | undefined,
+): Map<K, T[]> => {
+	const result = new Map<K, T[]>();
+
+	for (let idx = 0, len = array.length; idx < len; idx++) {
+		const value = array[idx];
+		const key = selector(value, idx);
+
+		if (key === undefined) {
+			continue;
+		}
+
+		const existing = result.get(key);
+		if (existing) {
+			existing.push(value);
+		} else {
+			result.set(key, [value]);
+		}
+	}
+
+	return result;
+};
+
+/**
  * returns the cartesian product of two arrays
  * @template A type of elements in the first array
  * @template B type of elements in the second array
