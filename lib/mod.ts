@@ -24,7 +24,7 @@ export const range = (start: number, end: number, step: number = 1): number[] =>
  * @returns array containing chunks of elements
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const chunked = <T>(array: T[], size: number): T[][] => {
+export const chunked = <T>(array: readonly T[], size: number): T[][] => {
 	const chunks: T[][] = [];
 
 	for (let i = 0, il = array.length; i < il; i += size) {
@@ -41,7 +41,10 @@ export const chunked = <T>(array: T[], size: number): T[][] => {
  * @returns an array of transformed elements
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const mapDefined = <T, R>(array: T[], mapper: (value: T, index: number) => R | undefined): R[] => {
+export const mapDefined = <T, R>(
+	array: readonly T[],
+	mapper: (value: T, index: number) => R | undefined,
+): R[] => {
 	const len = array.length;
 	const mapped: R[] = [];
 
@@ -65,7 +68,10 @@ export const mapDefined = <T, R>(array: T[], mapper: (value: T, index: number) =
  * and the second array containing elements that doesn't satisfy the test.
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const partition = <T>(array: T[], predicate: (item: T, index: number) => unknown): [T[], T[]] => {
+export const partition = <T>(
+	array: readonly T[],
+	predicate: (item: T, index: number) => unknown,
+): [T[], T[]] => {
 	const a: T[] = [];
 	const b: T[] = [];
 
@@ -85,7 +91,7 @@ export const partition = <T>(array: T[], predicate: (item: T, index: number) => 
  */
 /*#__NO_SIDE_EFFECTS__*/
 export const cluster = <T>(
-	array: T[],
+	array: readonly T[],
 	predicate: (a: T, b: T, array: [T, ...T[]]) => unknown,
 ): [T, ...T[]][] => {
 	const len = array.length;
@@ -121,7 +127,7 @@ export const cluster = <T>(
  * @returns an array of elements in a not present in b
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const difference = <T>(a: T[], b: T[]): T[] => {
+export const difference = <T>(a: readonly T[], b: readonly T[]): T[] => {
 	return [...new Set(a).difference(new Set(b))];
 };
 
@@ -133,7 +139,11 @@ export const difference = <T>(a: T[], b: T[]): T[] => {
  * @returns an array of elements in a not present in b based on the selector
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const differenceBy = <T, K>(a: T[], b: T[], selector: (value: T, index: number) => K): T[] => {
+export const differenceBy = <T, K>(
+	a: readonly T[],
+	b: readonly T[],
+	selector: (value: T, index: number) => K,
+): T[] => {
 	const bSet = new Set(b.map(selector));
 	const aSet = new Set<K>();
 
@@ -156,7 +166,7 @@ export const differenceBy = <T, K>(a: T[], b: T[], selector: (value: T, index: n
  * @returns an array of elements present in both a and b
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const intersection = <T>(a: T[], b: T[]): T[] => {
+export const intersection = <T>(a: readonly T[], b: readonly T[]): T[] => {
 	return [...new Set(a).intersection(new Set(b))];
 };
 
@@ -166,7 +176,7 @@ export const intersection = <T>(a: T[], b: T[]): T[] => {
  * @returns a new array with unique elements
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const unique = <T>(array: T[]): T[] => {
+export const unique = <T>(array: readonly T[]): T[] => {
 	return [...new Set(array)];
 };
 
@@ -177,7 +187,7 @@ export const unique = <T>(array: T[]): T[] => {
  * @returns a new array with elements unique based on the selector's key
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const uniqueBy = <T, K>(array: T[], selector: (value: T, index: number) => K): T[] => {
+export const uniqueBy = <T, K>(array: readonly T[], selector: (value: T, index: number) => K): T[] => {
 	const keys = new Set<K>();
 	const values: T[] = [];
 
@@ -202,7 +212,7 @@ export const uniqueBy = <T, K>(array: T[], selector: (value: T, index: number) =
  * @returns a random element or undefined if the array is empty
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const sampleOne = <T>(arr: T[]): T | undefined => {
+export const sampleOne = <T>(arr: readonly T[]): T | undefined => {
 	const len = arr.length;
 	return len !== 0 ? arr[Math.floor(Math.random() * len)] : undefined;
 };
@@ -214,7 +224,7 @@ export const sampleOne = <T>(arr: T[]): T | undefined => {
  * @returns a new array containing up to n randomly selected elements
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const sample = <T>(arr: T[], n: number): T[] => {
+export const sample = <T>(arr: readonly T[], n: number): T[] => {
 	const result = [...arr];
 	const len = result.length;
 
@@ -234,7 +244,7 @@ export const sample = <T>(arr: T[], n: number): T[] => {
  * @returns a new array with elements in random order
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const shuffle = <T>(arr: T[]): T[] => {
+export const shuffle = <T>(arr: readonly T[]): T[] => {
 	return sample(arr, Infinity);
 };
 
@@ -247,7 +257,7 @@ export type FalsyValue = false | null | undefined | 0 | '';
  * @returns a new array with all falsy values removed
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const definite = <T>(arr: (T | FalsyValue)[]): T extends FalsyValue ? never[] : T[] => {
+export const definite = <T>(arr: readonly (T | FalsyValue)[]): T extends FalsyValue ? never[] : T[] => {
 	// deno-lint-ignore no-explicit-any
 	return arr.filter(Boolean) as any;
 };
@@ -258,7 +268,7 @@ export const definite = <T>(arr: (T | FalsyValue)[]): T extends FalsyValue ? nev
  * @param predicate function to test each element with
  * @returns a new array containing elements that satisfy the predicate, in the original order
  */
-export const filterRight = <T>(array: T[], predicate: (value: T, index: number) => boolean): T[] => {
+export const filterRight = <T>(array: readonly T[], predicate: (value: T, index: number) => boolean): T[] => {
 	const result: T[] = [];
 
 	for (let i = array.length - 1; i >= 0; i--) {
@@ -276,7 +286,7 @@ export const filterRight = <T>(array: T[], predicate: (value: T, index: number) 
  * @returns random index selected based on weight distribution or -1 if array is empty
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const weightedIndex = (weights: number[]): number => {
+export const weightedIndex = (weights: readonly number[]): number => {
 	const len = weights.length;
 
 	const arr = new Array(len);
@@ -313,7 +323,7 @@ export const weightedIndex = (weights: number[]): number => {
  * @returns an array of tuples, where each tuple contains one element from `a` and one from `b`
  */
 /*#__NO_SIDE_EFFECTS__*/
-export const product = <A, B>(a: A[], b: B[]): [A, B][] => {
+export const product = <A, B>(a: readonly A[], b: readonly B[]): [A, B][] => {
 	const result: [A, B][] = [];
 
 	for (let i = 0, lenA = a.length; i < lenA; i++) {
