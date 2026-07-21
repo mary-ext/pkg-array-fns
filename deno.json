@@ -1,6 +1,6 @@
 {
 	"name": "@mary/array-fns",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"license": "0BSD",
 	"exports": "./lib/mod.ts",
 	"fmt": {
